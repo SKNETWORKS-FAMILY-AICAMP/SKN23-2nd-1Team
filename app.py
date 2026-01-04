@@ -13,7 +13,7 @@ pages = [
     st.Page("pages/performance.py", title="모델 성능"),
     st.Page("pages/insights.py", title="데이터 인사이트"),
     st.Page("pages/action.py", title="비지니스 권장사항"),
-    st.Page("util/commot_util.py", title="공통유틸"),
+    st.Page("util/common_util.py", title="공통유틸"),
 ]
 
 st.navigation(pages, position="sidebar").run()
