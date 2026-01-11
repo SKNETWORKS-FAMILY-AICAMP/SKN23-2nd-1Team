@@ -1,0 +1,70 @@
+/* 상단 메뉴(네비게이션) 전체 배경색 */
+header {
+    background-color: #171a21;
+}
+
+/* 사이드바 배경색 */
+section[data-testid="stSidebar"] {
+    background-color: #171a21;
+}
+
+/* 사이드바 글씨 색 */
+section[data-testid="stSidebar"] * {
+    color: white;
+}
+
+/* 사이드바 메뉴 hover 효과 */
+section[data-testid="stSidebar"] div:hover {
+    background-color: #21252e;
+    border-radius: 8px;
+}
+
+/* 상단 로고/텍스트 색 */
+header * {
+    color: white;
+}
+
+/* 로딩 스피너 */
+
+@keyframes steam-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-wrap {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px 0
+}
+
+.loading-spinner {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  animation: steam-spin 1s linear infinite;
+  opacity: 0.95;
+}
+
+/* ===== Loading Overlay (no layout shift) ===== */
+.loading-overlay {
+  position: fixed;
+  inset: 0;               /* top/right/bottom/left: 0 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  pointer-events: none;   /* 화면 클릭 막고 싶으면 none -> auto로 바꾸고 아래 참고 */
+}
+
+.loading-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.35); /* 살짝 어둡게 */
+  backdrop-filter: blur(2px);
+}
+
+.st-emotion-cache-nrmo1a{
+  width:100%
+}
