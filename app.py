@@ -50,7 +50,7 @@ pages = [
 st.navigation(pages, position="sidebar").run()
 
 # ================== 로 고 ==================
-steam_logo = "images/steam_logo_white_transparent.svg"
-icon_logo = "images/steam_logo_black_transparent.svg"
+steam_logo = "images/steam_logo_white.svg"
+icon_logo = "images/steam_logo_white.svg"
 st.logo(steam_logo, size="large", icon_image= icon_logo)
 # ===========================================

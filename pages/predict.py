@@ -85,17 +85,21 @@ with st.container():
     </a>
     """
 
-    components.html(html_code, height=700)
+    #components.html(html_code, height=700)
 
 
-with st.container():
+with st.container(border=True):
     st.subheader("내 리뷰 예측")
     st.write("*방금 작성한 내 STEAM 리뷰를 예측합니다.")
-
-    
-st.divider()
-
-with st.container():
+    user_id = st.text_input("Steam ID를 입력하세요")
+    if user_id:
+        if not user_id.isdigit():
+            st.error("Steam ID는 숫자만 입력해주세요.")
+        else:
+            steam_id = int(user_id)
+            st.success("정상 입력")
+            
+with st.container(border=True):
     st.subheader("실시간 리뷰 예측")
     st.write("*실시간 하루단위의 STEAM 리뷰를 예측합니다.")
     # 하루치 리뷰 데이터 API
@@ -119,7 +123,6 @@ with st.container():
         # session_state 저장
         st.session_state["one_day_review_df"] = df_all
 
-    
     clicked = st.button(
         "리뷰 가져오기",
         on_click=one_day_review,
@@ -135,11 +138,7 @@ with st.container():
             st.subheader("리뷰 예측")
             st.dataframe(df_result, use_container_width=True, height=500)
 
-
-
-st.divider()
-
-with st.container():
+with st.container(border=True):
     st.subheader("엑셀 업로드로 예측")
 
     _, col1, col2, col3 = st.columns([5, 3, 2.45, 2.5])
