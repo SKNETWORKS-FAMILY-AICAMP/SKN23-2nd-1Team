@@ -38,19 +38,23 @@ if st.session_state["loading"]:
 else:
     ph.empty()
 # ================== 네비게이션 (사이드바) ==================
-pages = [
-    st.Page("pages/main.py", title="홈"),
-    st.Page("pages/predict.py", title="예측"),
-    st.Page("pages/performance.py", title="모델 성능"),
-    st.Page("pages/insights.py", title="데이터 인사이트"),
-    st.Page("pages/action.py", title="비지니스 권장사항"),
-    st.Page("util/common_util.py", title="공통유틸"),
-]
+pages = {
+    "개요": [
+        st.Page("pages/main.py", title="개요1"),
+        st.Page("pages/outline1.py", title="개요2"),
+        st.Page("pages/outline2.py", title="개요3"),
+   ],
+    "모델":[
+        st.Page("pages/predict.py", title="예측"),
+        st.Page("pages/performance.py", title="모델 성능"),
+        st.Page("pages/insights.py", title="데이터 인사이트"),
+        st.Page("pages/action.py", title="비지니스 권장사항")
+    ]
+}
 
 st.navigation(pages, position="sidebar").run()
 
 # ================== 로 고 ==================
 steam_logo = "images/steam_logo_white.svg"
-icon_logo = "images/steam_logo_white.svg"
-st.logo(steam_logo, size="large", icon_image= icon_logo)
+st.logo(steam_logo, size="large", icon_image=steam_logo)
 # ===========================================
