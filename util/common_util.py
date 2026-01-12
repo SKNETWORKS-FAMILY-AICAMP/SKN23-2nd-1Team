@@ -1,8 +1,8 @@
 import pandas as pd
 import streamlit as st
 from pathlib import Path
-import seaborn as sns
-import matplotlib.pyplot as plt
+# import seaborn as sns
+# import matplotlib.pyplot as plt
 import io
 
 st.title("공통 기능")
@@ -62,18 +62,18 @@ with st.container():
                 use_container_width=True,
             )
 st.divider()
-with st.container():
-    st.subheader("barplot")
+#with st.container():
+    # st.subheader("barplot")
 
-    df = pd.read_excel('data/template.xlsx')
-    fig, ax = plt.subplots(figsize=(8, 4))
-    sns.barplot(
-        data=df,
-        x=df['구매총액'],
-        y=df.index,
-        estimator="mean",   # 평균
-        errorbar=None,      # 신뢰구간 제거 (깔끔)
-        ax=ax,
-    )
+    # df = pd.read_excel('data/template.xlsx')
+    # fig, ax = plt.subplots(figsize=(8, 4))
+    # sns.barplot(
+    #     data=df,
+    #     x=df['구매총액'],
+    #     y=df.index,
+    #     estimator="mean",   # 평균
+    #     errorbar=None,      # 신뢰구간 제거 (깔끔)
+    #     ax=ax,
+    # )
 
-    st.pyplot(fig)
+    # st.pyplot(fig)
