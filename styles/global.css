@@ -3,8 +3,8 @@
   background-color: #0F1924;
   background:
     linear-gradient(
-        rgba(2, 6, 23, 0.85),
-        rgba(2, 6, 23, 0.85)
+        rgba(2, 6, 23, 0.75),
+        rgba(2, 6, 23, 0.75)
     ),
     url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
   background-size: cover;
@@ -39,8 +39,11 @@ div[data-testid="stVerticalBlockBorderWrapper"]{
   border-radius: 2px;
 }
 .st-emotion-cache-1ne20ew{
-    background-color : #252E39;
+    background: linear-gradient(90deg, rgba(86, 92, 103, 0.3), rgba(90, 98, 108, 0.3));
+    /* background-color : #252E39; */
     border-radius : 0rem;
+    backdrop-filter: blur(8px);
+
 }
 
 /* 카드 안쪽 텍스트 톤 */
@@ -128,3 +131,74 @@ header * {
 .st-emotion-st-emotion-st-emotion-cache-pk3c77{
   height:3px;
 }
+
+/* =========================
+   Steam Topbar Install Button (Tuned)
+   ========================= */
+
+.stButton > button,
+.stDownloadButton > button,
+.stFormSubmitButton > button,
+div[data-testid="stButton"] button,
+div[data-testid="stDownloadButton"] button,
+div[data-testid="stFormSubmitButton"] button,
+button[kind="primary"],
+button[kind="secondary"] {
+
+  /* 형태 */
+  border-radius: 2px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 12px !important;
+
+  /* 🔹 기본 색상 = 이전 hover 색 */
+  background: #3a4554 !important;
+  border: 1px solid #4b5868 !important;
+  color: #e6edf5 !important;
+
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.2px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08) !important;
+
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    transform 80ms ease !important;
+}
+
+/* 🔹 Hover = 기본보다 살짝 더 연하게 */
+.stButton > button:hover,
+.stDownloadButton > button:hover,
+.stFormSubmitButton > button:hover,
+div[data-testid="stButton"] button:hover,
+div[data-testid="stDownloadButton"] button:hover,
+div[data-testid="stFormSubmitButton"] button:hover,
+button[kind="primary"]:hover,
+button[kind="secondary"]:hover {
+
+  background: #465366 !important;
+  border-color: #5a687b !important;
+}
+
+/* 🔹 Active = 눌림 */
+.stButton > button:active,
+.stDownloadButton > button:active,
+.stFormSubmitButton > button:active,
+button[kind="primary"]:active,
+button[kind="secondary"]:active {
+
+  transform: translateY(1px) !important;
+  background: #2f3845 !important;
+  border-color: #3b4654 !important;
+}
+
+/* Disabled */
+.stButton > button:disabled,
+.stDownloadButton > button:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+}
+

@@ -85,7 +85,7 @@ with st.container():
     </a>
     """
 
-    #components.html(html_code, height=700)
+    components.html(html_code, height=700)
 
 
 with st.container(border=True):
