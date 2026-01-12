@@ -53,7 +53,7 @@ with st.container(border=True):
 
     # 업로드 전: 빈 테이블 + 다운로드 비활성화
     if uploaded is None:
-        st.dataframe(pd.DataFrame(), use_container_width=True, height=500)
+        #st.dataframe(pd.DataFrame(), use_container_width=True, height=500)
 
         with col3:
             st.button("엑셀 다운로드", disabled=True, use_container_width=True)
@@ -61,7 +61,11 @@ with st.container(border=True):
 
         # 업로드 후
         df = pd.read_excel(uploaded)
-        st.dataframe(df, use_container_width=True, height=500)
+        styled = df.style.set_properties(**{
+            "background-color": "#1b2838",   # Steam 다크 블루
+            "color": "#c7d5e0"               # Steam 글자색
+        })
+        st.dataframe(styled, use_container_width=True, hide_index=True)
 
         # DataFrame → Excel bytes
         def df_to_excel_bytes(df: pd.DataFrame) -> bytes:
@@ -80,3 +84,27 @@ with st.container(border=True):
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 use_container_width=True,
             )
+
+
+    df = pd.DataFrame({
+        "Rank": [1, 2, 3, 4, 5],
+        "Game": [
+            "Counter-Strike 2",
+            "PUBG: BATTLEGROUNDS",
+            "Eternal Return",
+            "Where Winds Meet",
+            "Limbus Company"
+        ],
+        "Players": [1118910, 583272, 513295, 141376, 137305]
+    })
+
+    styled = df.style.set_properties(**{
+        "background-color": "#1b2838",   # Steam 다크 블루
+        "color": "#c7d5e0"               # Steam 글자색
+    })
+
+    st.dataframe(
+        styled,
+        use_container_width=True,
+        hide_index=True
+    )

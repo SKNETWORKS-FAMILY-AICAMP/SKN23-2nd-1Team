@@ -59,8 +59,8 @@ with st.container():
     <style>
     {css}
     </style>
-    <a href="{STORE_URL}" target="_blank" rel="noopener noreferrer" class="card-link">
     <div class="wrap">
+    <a href="{STORE_URL}" target="_blank" rel="noopener noreferrer" class="card-link">
     <div class="container">
         <div class="video-clip">
         <div class="video-bg">
@@ -81,8 +81,8 @@ with st.container():
         </div>
         </div>
     </div>
-    </div>
     </a>
+    </div>
     """
 
     components.html(html_code, height=700)
@@ -136,7 +136,11 @@ with st.container(border=True):
             st.warning("수집된 리뷰가 없습니다.")
         else:
             st.subheader("리뷰 예측")
-            st.dataframe(df_result, use_container_width=True, height=500)
+            styled = df_result.style.set_properties(**{
+                "background-color": "#1b2838",   # Steam 다크 블루
+                "color": "#c7d5e0"               # Steam 글자색
+            })
+            st.dataframe(styled, use_container_width=True, hide_index=True)
 
 with st.container(border=True):
     st.subheader("엑셀 업로드로 예측")
@@ -162,7 +166,7 @@ with st.container(border=True):
 
     # 업로드 전: 빈 테이블 + 다운로드 비활성화
     if uploaded is None:
-        st.dataframe(pd.DataFrame(), use_container_width=True, height=500)
+        #st.dataframe(pd.DataFrame(), use_container_width=True, height=500)
 
         with col3:
             st.button("엑셀 다운로드", disabled=True, use_container_width=True)
@@ -170,7 +174,11 @@ with st.container(border=True):
 
         # 업로드 후
         df = pd.read_excel(uploaded)
-        st.dataframe(df, use_container_width=True, height=500)
+        styled = df.style.set_properties(**{
+            "background-color": "#1b2838",   # Steam 다크 블루
+            "color": "#c7d5e0"               # Steam 글자색
+        })
+        st.dataframe(styled, use_container_width=True, hide_index=True)
 
         # DataFrame → Excel bytes
         def df_to_excel_bytes(df: pd.DataFrame) -> bytes:

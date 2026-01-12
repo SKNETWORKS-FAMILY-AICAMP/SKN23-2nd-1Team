@@ -62,6 +62,10 @@ header {
     background-color: #171a21;
 }
 
+.st-emotion-cache-pd6qx2{
+  color: white
+}
+
 /* 사이드바 배경색 */
 section[data-testid="stSidebar"] {
     background-color: #171a21;
