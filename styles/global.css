@@ -1,3 +1,59 @@
+/* 최상위 배경 메인 */
+.stApp {
+  background-color: #0F1924;
+  background:
+    linear-gradient(
+        rgba(2, 6, 23, 0.85),
+        rgba(2, 6, 23, 0.85)
+    ),
+    url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color : #EBEBEB;
+}
+p {
+  color: #EBEBEB
+}
+
+/* 기본 흰 배경 제거 */
+[data-testid="stAppViewContainer"] {
+    background: transparent;
+}
+
+/* 섹션별 배경도 투명 */
+[data-testid="stHeader"],
+[data-testid="stSidebar"],
+[data-testid="stToolbar"] {
+    background: transparent;
+}
+
+/* streamlit에서 카드같이 구성#252E39 */
+/* border=True 컨테이너 래퍼(카드 외곽) */
+div[data-testid="stVerticalBlockBorderWrapper"]{
+  background: linear-gradient(180deg, rgba(36,44,58,.92), rgba(22,27,36,.92));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  padding: 18px 18px;
+  margin: 14px 0;
+  border-radius: 2px;
+}
+.st-emotion-cache-1ne20ew{
+    background-color : #252E39;
+    border-radius : 0rem;
+}
+
+/* 카드 안쪽 텍스트 톤 */
+div[data-testid="stVerticalBlockBorderWrapper"] *{
+  color: #e5e7eb;
+}
+
+/* 입력 박스/버튼 톤도 카드에 맞게(선택) */
+div[data-testid="stVerticalBlockBorderWrapper"] input{
+  background: rgba(2,6,23,0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
 /* 상단 메뉴(네비게이션) 전체 배경색 */
 header {
     background-color: #171a21;
@@ -67,4 +123,8 @@ header * {
 
 .st-emotion-cache-nrmo1a{
   width:100%
+}
+
+.st-emotion-st-emotion-st-emotion-cache-pk3c77{
+  height:3px;
 }
