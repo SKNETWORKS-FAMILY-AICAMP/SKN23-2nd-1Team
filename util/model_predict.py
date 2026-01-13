@@ -1,19 +1,29 @@
-
 import pandas as pd
 import numpy as np
 import re
-
-
 from collections import Counter
+# Logistic Regression
+from sklearn.linear_model import LogisticRegression
+
+# LightGBM
+from lightgbm import LGBMClassifier
+
+# HistGradientBoosting
+from sklearn.ensemble import HistGradientBoostingClassifier
 
 
+def churn_predict(df, model):
 
-def churn_predict(df):
-    df# 상위 50개 게임으로만 이루어진 데이터
+    # 상위 50개 게임으로만 이루어진 데이터
     appid_counts = df['appid'].value_counts()
     top50_appids = appid_counts.head(50).index.tolist()
     df_top50 = df[df['appid'].isin(top50_appids)].copy()
     df_model = df_top50.drop(columns=['deck_playtime_at_review', 'developer_response', 'timestamp_dev_responded'])
+
+
+    df_model["appid"] = pd.to_numeric(df_model["appid"], errors="coerce")
+    df_model = df_model.dropna(subset=["appid"]).copy()
+    df_model["appid"] = df_model["appid"].astype(int)
 
     # Top50 기반으로 매핑 (네가 적어준 game_style 그대로 반영)
     # ※ 기존 29개에 없던 appid도 포함해서 업데이트
@@ -73,6 +83,7 @@ def churn_predict(df):
 
     # game_style 컬럼 생성
     df_model["game_style"] = df_model["appid"].map(STYLE_MAP)
+    df_model = df_model[df_model["game_style"].notna()].copy()
 
     # appid별 review 결측치 분포
     review_na_by_app = (
@@ -564,11 +575,11 @@ def churn_predict(df):
                 ]
 
     for col in bool_cols:
-        df_model[col] = df_model[col].astype(int)
-
-    # df_model['voted_up'].value_counts()
-    # df_model['language_english'].value_counts()
-    # df_model['game_style_story'].value_counts()
+        if col in df_model.columns:
+            df_model[col] = df_model[col].astype(int)
+        else:
+            # 컬럼이 없으면 0으로 만들어주기 (학습 컬럼 맞추기용)
+            df_model[col] = 0
     
     TARGET = "churn"
 
@@ -603,3 +614,31 @@ def churn_predict(df):
     # 혹시 누락/오타로 없는 컬럼이 있으면 자동 제외(코드 안깨지게)
     FEATURES = [c for c in FEATURES if c in df_model.columns]
 
+    # weighted_vote_score를 숫자로 강제 변환
+    df_model["weighted_vote_score"] = pd.to_numeric(df_model["weighted_vote_score"], errors="coerce").fillna(0).astype(float)
+
+# --- X 구성 ---
+    X = df_model[FEATURES].copy()
+
+    # --- 예측 확률 ---
+    print("df_in:", df.shape)
+    print("df_model:", df_model.shape)
+    print("X:", X.shape)
+    # LightGBM/XGBoost/sklearn 대부분은 predict_proba 지원
+    if hasattr(model, "predict_proba"):
+        proba = model.predict_proba(X)[:, 1]
+    else:
+        # 일부 모델은 decision_function만 있음
+        if hasattr(model, "decision_function"):
+            score = model.decision_function(X)
+            proba = 1 / (1 + np.exp(-score))  # sigmoid
+        else:
+            # 최후 fallback: predict가 0/1만 주는 경우
+            proba = model.predict(X).astype(float)
+
+
+    # --- Streamlit에서 보여주기 좋게 df_out 만들기 ---
+    df_out = df_model.copy()
+    df_out["churn_proba"] = proba
+
+    return df_out
