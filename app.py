@@ -38,6 +38,7 @@ st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 # else:
 #     ph.empty()
 # ================== 네비게이션 (사이드바) ==================
+
 pages = [
         st.Page("pages/home.py", title="Overview"),
         st.Page("pages/predict.py", title="Prediction"),
@@ -45,6 +46,7 @@ pages = [
         st.Page("pages/insights.py", title="Insights"),
         st.Page("pages/action.py", title="Recommendations")
 ]
+
 
 st.navigation(pages, position="sidebar").run()
 
