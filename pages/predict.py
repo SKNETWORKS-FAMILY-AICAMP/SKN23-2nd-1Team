@@ -6,15 +6,18 @@ import json
 import ast
 import util.review_api as ra
 from util.loading import loading_on
-import io
 from util.global_style import load_global_css
-
+from util.global_style import apply_global_style
+import util.excel_util as eu
+import util.email_util as emu
+    
 ##
 # Date        Description   Authur
 # 2026-01-11  최초생성      created by 양창일
 ##
 # css
 load_global_css()
+apply_global_style("images/library_hero 3.jpg")
 
 # 데이터셋 불러오기
 df = pd.read_csv("data/steam_top100_assets_3rd_trimmed.csv")
@@ -85,20 +88,42 @@ with st.container():
     </div>
     """
 
-    components.html(html_code, height=700)
+    #components.html(html_code, height=700)
 
 
 with st.container(border=True):
-    st.subheader("내 리뷰 예측")
-    st.write("*방금 작성한 내 STEAM 리뷰를 예측합니다.")
+    st.subheader("리뷰 단건 예측")
+    st.write("*최근 작성된 STEAM 리뷰를 예측합니다.")
     user_id = st.text_input("Steam ID를 입력하세요")
     if user_id:
         if not user_id.isdigit():
             st.error("Steam ID는 숫자만 입력해주세요.")
         else:
             steam_id = int(user_id)
-            st.success("정상 입력")
-            
+                    # API 실행
+            review = ra.run_batch([selected_appid], days=0, max_workers=4)
+
+            if not review:
+                st.warning("수집된 리뷰가 없습니다.")
+            else :
+                # df만 뽑아서 concat
+                df_review = pd.concat(
+                    [df for _, df in review],
+                    ignore_index=True
+                )
+                steam_id = int(steam_id)
+                df_review["steamid"] = df_review["steamid"].astype(int)
+                df_review = df_review[df_review['steamid']==steam_id]
+
+                st.subheader("리뷰 예측")
+                styled = df_review.style.set_properties(**{
+                    "background-color": "#1b2838",   # Steam 다크 블루
+                    "color": "#c7d5e0"               # Steam 글자색
+                })
+                st.dataframe(styled, use_container_width=True, hide_index=True)
+                
+                # session_state 저장
+                st.session_state["one_review_df"] = df_review
 with st.container(border=True):
     st.subheader("실시간 리뷰 예측")
     st.write("*실시간 하루단위의 STEAM 리뷰를 예측합니다.")
@@ -108,8 +133,7 @@ with st.container(border=True):
         app_id_list = [app_id]
         
         # API 실행
-        with st.spinner("리뷰 수집 중..."):
-            review_list = ra.run_batch(app_id_list, days=1, max_workers=4)
+        review_list = ra.run_batch(app_id_list, days=1, max_workers=4)
 
         if not review_list:
             st.warning("수집된 리뷰가 없습니다.")
@@ -141,6 +165,25 @@ with st.container(border=True):
                 "color": "#c7d5e0"               # Steam 글자색
             })
             st.dataframe(styled, use_container_width=True, hide_index=True)
+            excel_bytes = eu.df_to_excel_bytes(styled)
+
+            # 하드 코딩 제목/본문
+            SUBJECT = "[Steam Churn] 엑셀 예측 결과 리포트"
+            HTML_BODY = f"""
+            <h2>Steam 이탈률 예측 결과</h2>
+            <p>게임: <b>{title}</b></p>
+            <p>첨부된 엑셀에 예측 결과가 포함되어 있습니다.</p>
+            <p>- 자동 발송 시스템</p>
+            """
+
+            if st.button("📧 결과 엑셀 이메일로 보내기", use_container_width=True):
+                emu.send_hardcoded_alert_with_excel(
+                    subject=SUBJECT,
+                    html_body=HTML_BODY,
+                    excel_bytes=excel_bytes,
+                    filename="steam_churn_result.xlsx",
+                )
+                st.success("📧 이메일로 엑셀 첨부 전송 완료!")
 
 with st.container(border=True):
     st.subheader("엑셀 업로드로 예측")
@@ -180,14 +223,7 @@ with st.container(border=True):
         })
         st.dataframe(styled, use_container_width=True, hide_index=True)
 
-        # DataFrame → Excel bytes
-        def df_to_excel_bytes(df: pd.DataFrame) -> bytes:
-            buffer = io.BytesIO()
-            with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
-                df.to_excel(writer, index=False, sheet_name="data")
-            return buffer.getvalue()
-
-        excel_bytes = df_to_excel_bytes(df)
+        excel_bytes = eu.df_to_excel_bytes(df)
 
         with col3:
             st.download_button(

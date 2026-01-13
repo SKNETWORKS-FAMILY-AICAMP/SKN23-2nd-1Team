@@ -19,38 +19,32 @@ css = Path("styles/global.css").read_text(encoding="utf-8")
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 # 전역 스피너 HTML
-SPINNER_URL = "https://store.fastly.steamstatic.com/public/images/applications/store/steam_spinner.png?v=8669e97b288da32670e77181618c3dfb"
-SPINNER_HTML = f"""
-<div class="loading-overlay">
-  <div class="loading-backdrop"></div>
-  <img class="loading-spinner" src="{SPINNER_URL}" />
-</div>
-"""
+# SPINNER_URL = "https://store.fastly.steamstatic.com/public/images/applications/store/steam_spinner.png?v=8669e97b288da32670e77181618c3dfb"
+# SPINNER_HTML = f"""
+# <div class="loading-overlay">
+#   <div class="loading-backdrop"></div>
+#   <img class="loading-spinner" src="{SPINNER_URL}" />
+# </div>
+# """
 
-# 세션키 초기화
-if "loading" not in st.session_state:
-    st.session_state["loading"] = False
+# # 세션키 초기화
+# if "loading" not in st.session_state:
+#     st.session_state["loading"] = False
 
-# 전역 overlay 렌더 (레이아웃 안 밀림)
-ph = st.empty()
-if st.session_state["loading"]:
-    ph.markdown(SPINNER_HTML, unsafe_allow_html=True)
-else:
-    ph.empty()
+# # 전역 overlay 렌더 (레이아웃 안 밀림)
+# ph = st.empty()
+# if st.session_state["loading"]:
+#     ph.markdown(SPINNER_HTML, unsafe_allow_html=True)
+# else:
+#     ph.empty()
 # ================== 네비게이션 (사이드바) ==================
-pages = {
-    "개요": [
-        st.Page("pages/main.py", title="개요1"),
-        st.Page("pages/outline1.py", title="개요2"),
-        st.Page("pages/outline2.py", title="개요3"),
-   ],
-    "모델":[
-        st.Page("pages/predict.py", title="예측"),
-        st.Page("pages/performance.py", title="모델 성능"),
-        st.Page("pages/insights.py", title="데이터 인사이트"),
-        st.Page("pages/action.py", title="비지니스 권장사항")
-    ]
-}
+pages = [
+        st.Page("pages/home.py", title="Overview"),
+        st.Page("pages/predict.py", title="Prediction"),
+        st.Page("pages/performance.py", title="Model Performance"),
+        st.Page("pages/insights.py", title="Insights"),
+        st.Page("pages/action.py", title="Recommendations")
+]
 
 st.navigation(pages, position="sidebar").run()
 
