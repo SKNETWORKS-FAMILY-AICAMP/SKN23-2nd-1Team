@@ -10,10 +10,13 @@ from util.global_style import load_global_css
 from util.global_style import apply_global_style
 import util.excel_util as eu
 import util.email_util as emu
+import util.model_predict as mp
+import joblib
     
 ##
 # Date        Description   Authur
 # 2026-01-11  최초생성      created by 양창일
+# 2026-01-13  예측추가      modified by 양창일
 ##
 # css
 load_global_css()
@@ -40,7 +43,7 @@ selected_appid = st.selectbox(
 
 # 선택된 appid로 df에서 한 줄 찾기
 row = df.loc[df["appid"] == selected_appid].iloc[0]
-title = row["game_name"]   # 필요한 값 꺼내기 (여기서 더 꺼내면 됨)
+title = row["game_name"]  
 
 VIDEO_URL = row["microtrailer_url"]
 THUMB_URL = row["image_url"]
@@ -160,14 +163,16 @@ with st.container(border=True):
             st.warning("수집된 리뷰가 없습니다.")
         else:
             st.subheader("리뷰 예측")
-            styled = df_result.style.set_properties(**{
+            model = joblib.load("models/model_730.pkl")
+            churn_df_result = mp.churn_predict(df_result,model)
+            styled = churn_df_result.style.set_properties(**{
                 "background-color": "#1b2838",   # Steam 다크 블루
                 "color": "#c7d5e0"               # Steam 글자색
             })
             st.dataframe(styled, use_container_width=True, hide_index=True)
             excel_bytes = eu.df_to_excel_bytes(styled)
 
-            # 하드 코딩 제목/본문
+            # 제목/본문
             SUBJECT = "[Steam Churn] 엑셀 예측 결과 리포트"
             HTML_BODY = f"""
             <h2>Steam 이탈률 예측 결과</h2>
@@ -176,14 +181,14 @@ with st.container(border=True):
             <p>- 자동 발송 시스템</p>
             """
 
-            if st.button("📧 결과 엑셀 이메일로 보내기", use_container_width=True):
+            if st.button("결과 엑셀 이메일로 보내기", use_container_width=True):
                 emu.send_hardcoded_alert_with_excel(
                     subject=SUBJECT,
                     html_body=HTML_BODY,
                     excel_bytes=excel_bytes,
                     filename="steam_churn_result.xlsx",
                 )
-                st.success("📧 이메일로 엑셀 첨부 전송 완료!")
+                st.success("이메일로 엑셀 첨부 전송 완료!")
 
 with st.container(border=True):
     st.subheader("엑셀 업로드로 예측")
