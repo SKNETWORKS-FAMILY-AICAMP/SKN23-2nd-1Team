@@ -33,7 +33,7 @@ df["game_name"] = df["game_name"].astype(str)
 appid_to_name = dict(zip(df["appid"].tolist(), df["game_name"].tolist()))
 options = list(appid_to_name.keys())
 
-st.subheader("게임별 이탈률 예측")
+st.title("게임별 이탈률 예측")
 
 selected_appid = st.selectbox(
     "게임 선택",
@@ -91,45 +91,10 @@ with st.container():
     </div>
     """
 
-    #components.html(html_code, height=700)
-
-
-with st.container(border=True):
-    st.subheader("리뷰 단건 예측")
-    st.write("*최근 작성된 STEAM 리뷰를 예측합니다.")
-    user_id = st.text_input("Steam ID를 입력하세요")
-    if user_id:
-        if not user_id.isdigit():
-            st.error("Steam ID는 숫자만 입력해주세요.")
-        else:
-            steam_id = int(user_id)
-                    # API 실행
-            review = ra.run_batch([selected_appid], days=0, max_workers=4)
-
-            if not review:
-                st.warning("수집된 리뷰가 없습니다.")
-            else :
-                # df만 뽑아서 concat
-                df_review = pd.concat(
-                    [df for _, df in review],
-                    ignore_index=True
-                )
-                steam_id = int(steam_id)
-                df_review["steamid"] = df_review["steamid"].astype(int)
-                df_review = df_review[df_review['steamid']==steam_id]
-
-                st.subheader("리뷰 예측")
-                styled = df_review.style.set_properties(**{
-                    "background-color": "#1b2838",   # Steam 다크 블루
-                    "color": "#c7d5e0"               # Steam 글자색
-                })
-                st.dataframe(styled, use_container_width=True, hide_index=True)
-                
-                # session_state 저장
-                st.session_state["one_review_df"] = df_review
+    components.html(html_code, height=700)
 with st.container(border=True):
     st.subheader("실시간 리뷰 예측")
-    st.write("*실시간 하루단위의 STEAM 리뷰를 예측합니다.")
+    st.write("*실시간 하루 단위의 STEAM 리뷰를 예측합니다.*")
     # 하루치 리뷰 데이터 API
     def one_day_review(app_id):
 
@@ -164,13 +129,20 @@ with st.container(border=True):
         else:
             st.subheader("리뷰 예측")
             model = joblib.load("models/model_730.pkl")
-            churn_df_result = mp.churn_predict(df_result,model)
-            styled = churn_df_result.style.set_properties(**{
+            churn_full_list_df, churn_view_list_df = mp.churn_predict(df_result,model)
+            styled_view = churn_view_list_df.style.set_properties(**{
                 "background-color": "#1b2838",   # Steam 다크 블루
                 "color": "#c7d5e0"               # Steam 글자색
             })
-            st.dataframe(styled, use_container_width=True, hide_index=True)
-            excel_bytes = eu.df_to_excel_bytes(styled)
+            styled_full = churn_full_list_df.style.set_properties(**{
+                "background-color": "#1b2838",   # Steam 다크 블루
+                "color": "#c7d5e0"               # Steam 글자색
+            })
+            st.dataframe(styled_view, use_container_width=True, hide_index=True)
+            
+            
+            
+            excel_bytes = eu.df_to_excel_bytes(styled_full)
 
             # 제목/본문
             SUBJECT = "[Steam Churn] 엑셀 예측 결과 리포트"
@@ -189,6 +161,69 @@ with st.container(border=True):
                     filename="steam_churn_result.xlsx",
                 )
                 st.success("이메일로 엑셀 첨부 전송 완료!")
+
+with st.container(border=True):
+    st.subheader("리뷰 단건 예측")
+    st.write("*최근 작성된 STEAM 리뷰를 예측합니다.*")
+
+    user_id = st.text_input("Steam ID를 입력하세요")
+
+    if user_id:
+        if not user_id.isdigit():
+            st.error("Steam ID는 숫자만 입력해주세요.")
+        else:
+            steam_id = int(user_id)
+
+            # API 실행 (list 반환)
+            review = ra.run_batch([selected_appid], days=0, max_workers=4)
+
+            # 1) run_batch 결과(list) 자체가 비었는지
+            if not review:
+                st.warning("수집된 리뷰가 없습니다.")
+            else:
+                # 2) list -> DataFrame 합치기 (빈 DF 방지)
+                dfs = [df for _, df in review if df is not None and not df.empty]
+                if not dfs:
+                    st.warning("수집된 리뷰가 없습니다.")
+                else:
+                    df_review = pd.concat(dfs, ignore_index=True)
+
+                    # 3) steamid 컬럼 존재/형 변환/필터
+                    if "steamid" not in df_review.columns:
+                        st.error("수집된 데이터에 steamid 컬럼이 없습니다.")
+                    else:
+                        df_review["steamid"] = pd.to_numeric(df_review["steamid"], errors="coerce").astype("Int64")
+                        df_review = df_review[df_review["steamid"] == steam_id].copy()
+
+                        # 4) 필터 이후 비었으면 예측 호출 금지 (LightGBM 에러 방지)
+                        if df_review.empty:
+                            st.warning("해당 Steam ID의 리뷰가 없습니다.")
+                        else:
+                            st.subheader("리뷰 예측")
+
+                            # (선택) import가 무거우면 여기서 지연 import
+                            # import util.model_predict as mp
+
+                            model = joblib.load("models/model_730.pkl")
+
+                            churn_full_df, churn_view_df = mp.churn_predict(df_review, model)
+
+                            # churn_predict가 빈 DF를 반환하는 경우도 대비
+                            if churn_view_df is None or (
+                                hasattr(churn_view_df, "empty") and churn_view_df.empty
+                            ):
+                                st.warning("예측 결과가 없습니다.")
+                            else:
+                                styled = churn_view_df.style.set_properties(**{
+                                    "background-color": "#1b2838",
+                                    "color": "#c7d5e0",
+                                })
+                                st.dataframe(styled, use_container_width=True, hide_index=True)
+
+                                # session_state 저장
+                                st.session_state["one_review_df"] = churn_view_df
+
+
 
 with st.container(border=True):
     st.subheader("엑셀 업로드로 예측")

@@ -63,11 +63,9 @@ def fetch_reviews_last_n_days(
     purchase_type: str = "all",
     num_per_page: int = 100,
     filter_offtopic_activity: int = 1,
-    sleep_sec: float = 0.35,     # 병렬이면 너무 낮추지 말기
+    sleep_sec: float = 0.35,
 
-    #  days==0일 때만 적용되는 상한
-    max_pages_when_days0: int = 10,       # 100개씩 3페이지 = 최대 300개
-    max_reviews_when_days0: int = 1000,   # 안전장치(원하면 None 가능)
+    max_reviews: int = 1000,         #  항상 적용되는 상한
 ):
     url = f"https://store.steampowered.com/appreviews/{appid}"
     cursor = "*"
@@ -82,10 +80,8 @@ def fetch_reviews_last_n_days(
         cutoff_ts = None  # 기간 컷 비활성
 
     while True:
-        #  days==0이면 3페이지까지만
-        if cutoff_ts is None and max_pages_when_days0 is not None:
-            if page >= max_pages_when_days0:
-                break
+        if max_reviews is not None and len(rows) >= max_reviews:
+            break
 
         params = {
             "json": 1,
@@ -146,11 +142,10 @@ def fetch_reviews_last_n_days(
                 "primarily_steam_deck": rev.get("primarily_steam_deck"),
             })
 
-            #  days==0일 때 최대 300개 도달하면 즉시 종료
-            if cutoff_ts is None and max_reviews_when_days0 is not None:
-                if len(rows) >= max_reviews_when_days0:
-                    stop = True
-                    break
+            # 공통 리뷰 상한
+            if max_reviews is not None and len(rows) >= max_reviews:
+                stop = True
+                break
 
         page += 1
         print(f"appid={appid}, page={page}, fetched={len(reviews)}, kept_total={len(rows)}")
