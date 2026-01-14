@@ -23,7 +23,7 @@ load_global_css()
 apply_global_style("images/library_hero 3.jpg")
 
 # 데이터셋 불러오기
-df = pd.read_csv("data/steam_top100_assets_3rd_trimmed.csv")
+df = pd.read_csv("data/steam_top50_assets_3rd_trimmed.csv")
 
 # 형변환
 df["appid"] = df["appid"].astype("int64")
@@ -49,6 +49,11 @@ VIDEO_URL = row["microtrailer_url"]
 THUMB_URL = row["image_url"]
 raw_tags = row["tags"]
 STORE_URL = row["store_url"]
+
+model_name = f"model_{selected_appid}"
+bundle = joblib.load(f"models/{model_name}.pkl")
+model = bundle['model']
+
 if isinstance(raw_tags, str):
     try:
         TAGS = json.loads(raw_tags)
@@ -128,7 +133,6 @@ with st.container(border=True):
             st.warning("수집된 리뷰가 없습니다.")
         else:
             st.subheader("리뷰 예측")
-            model = joblib.load("models/model_730.pkl")
             churn_full_list_df, churn_view_list_df = mp.churn_predict(df_result,model)
             styled_view = churn_view_list_df.style.set_properties(**{
                 "background-color": "#1b2838",   # Steam 다크 블루
@@ -256,14 +260,21 @@ with st.container(border=True):
     else:
 
         # 업로드 후
-        df = pd.read_excel(uploaded)
-        styled = df.style.set_properties(**{
+        df_excel = pd.read_excel(uploaded)
+        churn_full_excel_df, churn_view_excel_df = mp.churn_predict(df_excel,model)
+
+        styled_excel_view = churn_view_excel_df.style.set_properties(**{
             "background-color": "#1b2838",   # Steam 다크 블루
             "color": "#c7d5e0"               # Steam 글자색
         })
-        st.dataframe(styled, use_container_width=True, hide_index=True)
+        styled_excel_full = churn_full_excel_df.style.set_properties(**{
+            "background-color": "#1b2838",   # Steam 다크 블루
+            "color": "#c7d5e0"               # Steam 글자색
+        })
+        
+        st.dataframe(styled_excel_view, use_container_width=True, hide_index=True)
 
-        excel_bytes = eu.df_to_excel_bytes(df)
+        excel_bytes = eu.df_to_excel_bytes(styled_excel_full)
 
         with col3:
             st.download_button(
