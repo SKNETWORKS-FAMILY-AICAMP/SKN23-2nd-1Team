@@ -18,8 +18,7 @@ def churn_predict(df, model):
     appid_counts = df['appid'].value_counts()
     top50_appids = appid_counts.head(50).index.tolist()
     df_top50 = df[df['appid'].isin(top50_appids)].copy()
-    df_model = df_top50.drop(columns=['deck_playtime_at_review', 'developer_response', 'timestamp_dev_responded'])
-
+    df_model = df_top50.drop(columns=['deck_playtime_at_review', 'developer_response', 'timestamp_dev_responded'],errors="ignore")
 
     df_model["appid"] = pd.to_numeric(df_model["appid"], errors="coerce")
     df_model = df_model.dropna(subset=["appid"]).copy()
@@ -83,7 +82,8 @@ def churn_predict(df, model):
 
     # game_style 컬럼 생성
     df_model["game_style"] = df_model["appid"].map(STYLE_MAP)
-    df_model = df_model[df_model["game_style"].notna()].copy()
+    df_model["game_style"] = df_model["game_style"].fillna("other")
+
 
     # appid별 review 결측치 분포
     review_na_by_app = (
@@ -109,13 +109,16 @@ def churn_predict(df, model):
 
     # review NaN 드롭
     before = len(df_model)
-    df_model = df_model[df_model["review"].notna()].copy()
+    df_model["review"] = df_model["review"].fillna("").astype(str)
     after = len(df_model)
     
     df_model[['review']].isna().sum()
     
     # 공백/빈문자열(whitespace-only 포함) 마스크
+    df_model["review"] = df_model["review"].astype(str).apply(lambda x: x.strip())
+
     blank_mask = df_model["review"].astype(str).str.strip().eq("")
+    df_model = df_model[~blank_mask].copy()
 
     blank_by_appid = (
         df_model.assign(is_blank_review=blank_mask)
@@ -131,8 +134,7 @@ def churn_predict(df, model):
     # 공백/빈 문자열 리뷰 드롭
     before = len(df_model)
 
-    blank_mask = df_model["review"].astype(str).str.strip().eq("")
-    df_model = df_model[~blank_mask].copy()
+
 
     after = len(df_model)
     print(f"[drop blank review] before={before:,} -> after={after:,} (dropped {before-after:,})")
@@ -156,7 +158,7 @@ def churn_predict(df, model):
 
     # 기본 churn: days_after_review < window 이면 churn=1 (떠난 것)
     # - window가 없는(none) 행은 일단 NaN으로 둠(나중에 제외/처리)
-    df_model["churn"] = df_model["days_after_review"] < df_model["churn_window_days"].astype(int)
+    df_model["churn"] = (df_model["days_after_review"] < df_model["churn_window_days"]).astype(int)
 
 
     # 예외 처리(기존에 하던 규칙 유지)
@@ -385,6 +387,12 @@ def churn_predict(df, model):
             "neg": [r"tidak\s+rekomend", r"jangan\s+beli", r"tidak\s+layak", r"jelek", r"buruk", r"refund"],
             "boundary": True,
         },
+        "other": {
+            "phrases": [],
+            "words": [],
+            "neg": [],
+            "boundary": False,
+        },
     }
 
     # 없는 언어는 english로 fallback
@@ -612,18 +620,28 @@ def churn_predict(df, model):
     ]
 
     # 혹시 누락/오타로 없는 컬럼이 있으면 자동 제외(코드 안깨지게)
-    FEATURES = [c for c in FEATURES if c in df_model.columns]
+    for c in FEATURES:
+        if c not in df_model.columns:
+            df_model[c] = 0
 
     # weighted_vote_score를 숫자로 강제 변환
     df_model["weighted_vote_score"] = pd.to_numeric(df_model["weighted_vote_score"], errors="coerce").fillna(0).astype(float)
 
-# --- X 구성 ---
+    # --- X 구성 ---
     X = df_model[FEATURES].copy()
 
-    # --- 예측 확률 ---
-    print("df_in:", df.shape)
-    print("df_model:", df_model.shape)
-    print("X:", X.shape)
+    # X가 비면 예측 못하니, 단건에서 top50/appid가 -1로 빠졌을 때 대비
+    if X is None or X.shape[0] == 0:
+        # 최소 1행짜리 더미를 만들어 예측/출력 유지
+        X = pd.DataFrame({c: [0] for c in FEATURES})
+
+        # df_model도 1행짜리로 맞춰서 결과 리턴 구조 유지
+        df_model = df_model.iloc[:0].copy()
+        for c in FEATURES:
+            df_model[c] = 0
+        df_model = df_model.head(1)
+
+
     # LightGBM/XGBoost/sklearn 대부분은 predict_proba 지원
     if hasattr(model, "predict_proba"):
         proba = model.predict_proba(X)[:, 1]
@@ -639,6 +657,35 @@ def churn_predict(df, model):
 
     # --- Streamlit에서 보여주기 좋게 df_out 만들기 ---
     df_out = df_model.copy()
-    df_out["churn_proba"] = proba
+    df_out["churn_proba"] = proba*100
+    
+     ## 표출용 데이터셋 생성 시작 ##
+    # 위험군 표시
+    def segment(p: float) -> str:
+    # p는 0~100(%)로 들어온다고 가정
+        if p >= 70:
+            return "위험"
+        elif p >= 50:
+            return "중간"
+        else:
+            return "안전"
 
-    return df_out
+    DEMO_COLUMNS = [
+    "steamid",                    # 실무 필수 (이메일/운영 연계)
+    "churn_proba",              # 핵심 KPI: 이탈 확률
+    "review",                   # 실제 리뷰 내용
+    "voted_up",                 # 감정 방향
+    "playtime_per_game",        # 플레이 시간
+    "reviews_per_game"          # 유저 활동성
+    ]
+    demo_df = df_out[DEMO_COLUMNS]
+
+    demo_df.insert(
+        loc=demo_df.columns.get_loc("churn_proba") + 1,
+        column="risk_segment",
+        value=demo_df["churn_proba"].apply(segment)
+    )
+ 
+    ## 표출용 데이터셋 생성 끝 ##
+
+    return (df_out, demo_df)

@@ -12,6 +12,7 @@ from pathlib import Path
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
+    page_icon="images/favicon.svg", 
 )
 
 # ================== css 선언 ==================
