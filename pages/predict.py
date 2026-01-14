@@ -53,7 +53,8 @@ STORE_URL = row["store_url"]
 
 model_name = f"model_{selected_appid}"
 bundle = joblib.load(f"models/{model_name}.pkl")
-model = bundle['model']
+# bundle이 dict면 bundle['model'], 아니면 bundle 자체가 모델
+model = bundle["model"] if isinstance(bundle, dict) else bundle
 
 if isinstance(raw_tags, str):
     try:
