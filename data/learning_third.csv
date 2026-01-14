@@ -1,0 +1,6 @@
+﻿appid,n_rows,churn_rate,best_model,best_threshold,cv_best_f1,best_params,use_smote,smote_sampling_strategy,train_acc,train_precision,train_recall,train_f1,train_pos_rate,test_acc,test_precision,test_recall,test_f1,test_pos_rate
+1973530,43061,0.084206,HistGB,0.38,0.345452,"{'clf__learning_rate': 0.05, 'clf__max_leaf_no...",True,0.3,0.879238,0.339944,0.460876,0.391279,0.114172,0.877627,0.334006,0.456552,0.385781,0.115059
+1808500,252277,0.18666,RandomForest,0.5,0.3778,"{'clf__max_depth': None, 'clf__max_features': ...",True,0.5,0.708618,0.330429,0.546613,0.411877,0.308784,0.695041,0.30719,0.504884,0.381974,0.306782
+3405690,36162,0.17405,RandomForest,0.5,0.363613,"{'clf__max_depth': 8, 'clf__max_features': 'sq...",True,0.5,0.657472,0.276709,0.599801,0.378707,0.377268,0.646205,0.264322,0.579031,0.362957,0.381308
+553850,148012,0.139239,RandomForest,0.56,0.34815,"{'clf__max_depth': None, 'clf__max_features': ...",True,0.5,0.795928,0.337303,0.482683,0.397106,0.19925,0.780056,0.300418,0.436196,0.355793,0.202175
+730,272473,0.184881,RandomForest,0.48,0.341457,"{'clf__max_depth': 8, 'clf__max_features': 'sq...",True,0.5,0.563291,0.241195,0.634715,0.349557,0.486522,0.560455,0.23823,0.626799,0.345242,0.48643
