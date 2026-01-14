@@ -12,7 +12,8 @@ import util.excel_util as eu
 import util.email_util as emu
 import util.model_predict as mp
 import joblib
-    
+from util.set_util import set_page
+set_page("Predict")
 ##
 # Date        Description   Authur
 # 2026-01-11  최초생성      created by 양창일
@@ -204,11 +205,6 @@ with st.container(border=True):
                             st.warning("해당 Steam ID의 리뷰가 없습니다.")
                         else:
                             st.subheader("리뷰 예측")
-
-                            # (선택) import가 무거우면 여기서 지연 import
-                            # import util.model_predict as mp
-
-                            model = joblib.load("models/model_730.pkl")
 
                             churn_full_df, churn_view_df = mp.churn_predict(df_review, model)
 

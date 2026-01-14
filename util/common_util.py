@@ -61,18 +61,5 @@ with st.container():
                 use_container_width=True,
             )
 st.divider()
-#with st.container():
-    # st.subheader("barplot")
 
-    # df = pd.read_excel('data/template.xlsx')
-    # fig, ax = plt.subplots(figsize=(8, 4))
-    # sns.barplot(
-    #     data=df,
-    #     x=df['구매총액'],
-    #     y=df.index,
-    #     estimator="mean",   # 평균
-    #     errorbar=None,      # 신뢰구간 제거 (깔끔)
-    #     ax=ax,
-    # )
 
-    # st.pyplot(fig)

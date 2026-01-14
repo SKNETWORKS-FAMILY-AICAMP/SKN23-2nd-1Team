@@ -9,12 +9,6 @@ from pathlib import Path
 ##
 
 
-st.set_page_config(
-    layout="wide",
-    initial_sidebar_state="expanded",
-    page_icon="images/favicon.svg", 
-)
-
 # ================== css 선언 ==================
 css = Path("styles/global.css").read_text(encoding="utf-8")
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
