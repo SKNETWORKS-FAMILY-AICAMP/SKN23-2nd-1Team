@@ -1,8 +1,7 @@
 import pandas as pd
 import streamlit as st
 from pathlib import Path
-# import seaborn as sns
-# import matplotlib.pyplot as plt
+
 import io
 
 st.title("공통 기능")

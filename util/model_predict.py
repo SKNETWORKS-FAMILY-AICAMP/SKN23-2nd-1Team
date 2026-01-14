@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import re
-from collections import Counter
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression
 
@@ -671,12 +670,12 @@ def churn_predict(df, model):
             return "안전"
 
     DEMO_COLUMNS = [
-    "steamid",                    # 실무 필수 (이메일/운영 연계)
-    "churn_proba",              # 핵심 KPI: 이탈 확률
-    "review",                   # 실제 리뷰 내용
-    "voted_up",                 # 감정 방향
-    "playtime_per_game",        # 플레이 시간
-    "reviews_per_game"          # 유저 활동성
+    "steamid",                   # 실무 필수 (이메일/운영 연계)
+    "churn_proba",               # 핵심 KPI: 이탈 확률
+    "review",                    # 실제 리뷰 내용
+    "voted_up",                  # 감정 방향
+    "playtime_at_review",        # 리뷰 이전 플레이 시간
+    "reviews_per_game"           # 유저 활동성
     ]
     demo_df = df_out[DEMO_COLUMNS]
 
