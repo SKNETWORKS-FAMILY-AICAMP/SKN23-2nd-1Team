@@ -540,7 +540,7 @@ skn_2nd_team1
 └─ requirements.txt                           # 프로젝트 의존성 패키지 목록
 ```
 
-#### 4.5.2. 데이터 베이스 서버 구축
+#### 4.5.2. AWS 서버 배포
 > 상용 서비스 구조를 가정해 AWS EC2에 Streamlit 기반 Demo Server를 구축
 <div align="center">
 <img src="https://github.com/user-attachments/assets/f5ef1738-0595-43f1-a15c-e6aca35341d5"
