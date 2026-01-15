@@ -101,14 +101,14 @@ with st.container():
     components.html(html_code, height=700)
 with st.container(border=True):
     st.subheader("실시간 리뷰 예측")
-    st.write("*실시간 하루 단위의 STEAM 리뷰를 예측합니다.*")
-    # 하루치 리뷰 데이터 API
+    st.write("*실시간 STEAM 리뷰를 예측합니다.*")
+    # 리뷰 데이터 API
     def one_day_review(app_id):
 
         app_id_list = [app_id]
         
         # API 실행
-        review_list = ra.run_batch(app_id_list, days=1, max_workers=4)
+        review_list = ra.run_batch(app_id_list, days=0, max_workers=4)
 
         if not review_list:
             st.warning("수집된 리뷰가 없습니다.")
