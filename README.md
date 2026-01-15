@@ -13,7 +13,7 @@ Steam Top 50 Game Churn Prediction model <br>
 
 <div align="center">
   
-|<img src = "https://github.com/user-attachments/assets/e8523ced-51d4-4d38-ba17-86468e016839">|<img src = "https://github.com/user-attachments/assets/b38174a3-4acb-4cb5-8ab3-d922f5aab315">|<Image src="https://github.com/user-attachments/assets/ef40d3ff-af29-42a4-833b-d0a64aa44cfd">|<Image src="https://github.com/user-attachments/assets/b892841c-78b3-4739-a5a9-83fc9d9625aa">|<Image src="https://github.com/user-attachments/assets/44605108-52d8-4ea7-89c6-82885419592e">|
+| <img src="image/1-profile.png"> | <img src="image/2-profile.png"> | <img src="image/3-profile.png"> | <img src="image/4-profile.png" >| <img src="image/5-profile.png"> |
 |:--------:|:--------:|:--------:|:--------:|:-------:|
 | 양창일 (팀장) | 강승원 | 이승연 | 송민채 | 김민정 |
 | Data Engineer / FE / UI | PM / ML·DL Architect / PL | AL / ML | Threshold Analysis / ML | EDA / ML |
@@ -43,7 +43,7 @@ Steam Top 50 Game Churn Prediction model <br>
 
 <div align="center">
 
-<Image src="https://github.com/user-attachments/assets/6fcefba6-2de3-48bc-9fa4-89338c177e70">
+<Image src="image/6-main Steam.png">
 
 </div>
 <br>
@@ -57,8 +57,8 @@ Steam은 PC 게임 시장의 약 70~75%를 차지하는 사실상 표준 유통 
 
 <div align="center">
   
-  <img src="https://github.com/user-attachments/assets/710414ca-9c78-4292-897e-9970a0598015" width="350">
-  <img src="https://github.com/user-attachments/assets/7091c06a-ae8f-4360-802e-327e51873316" width="400">
+  <img src="image\7-Newzoo PC Console Gaming Report 2025 graph.jpg" width="350">
+  <img src="image\8-Dmitry Filatov (LinkedIn).png" width="400">
   
 </div>
 
@@ -84,7 +84,7 @@ Steam 생태계는 매주 수백 개의 신작 출시와  DLC·시즌 패스·�
 ```mermaid
 graph LR
 A[스팀 <br> 리뷰&유저<br> 행동 데이터] --> B
-B[게임 이탈 <br> 예측 ML <br> 모델 제작]--> C
+B[게임 이탈 <br> 예측 ML/DL <br> 모델 제작]--> C
 C[게임별 이탈 <br>예측 정보 출력<br>] -- 게임 유통사 --> D((Steam))
 C --> E(게임제작사)
 D --> F[이탈 방지 대책 수립 <br> 할인프로모션, 패치, <br> 내부운영 등]
@@ -124,16 +124,16 @@ E --> F
 
 <div align="center">
   
-  <img src="https://github.com/user-attachments/assets/f9afc2ba-f28e-419b-a965-18611948965d" width="400">
-  <img src="https://github.com/user-attachments/assets/7c872f5d-22db-4784-a4a3-f86139eae803" width="400">
+  <img src="image\9-Window Label graph.png" width="400">
+  <img src="image\10-Window Label graph2.png" width="400">
 
 
 
 | 게임 스타일 | 게임 수 | 키워드                                     | 이탈 기준(Day) | 이탈률(%) |
 |:---------:|:----------:|-----------------------------------------------|:----------:|:------:|
-| <b>video</b>     | 21         | 다회차 플레이 / 싱글 & 멀티플레이 / 샌드박스형 | < 10         |35.1%|
-| <b>online</b>    | 19         | 온라인 서버 운영 / 지속 접속형 / 서비스형     | < 7          |20.5%|
-| <b>story</b>     | 10         | 일회성 / 엔딩 소비형 / 완결형                 | < 5          |40.6%|
+| <b>video</b>     | 21  | 다회차 플레이 / 싱글 & 멀티플레이 / 샌드박스형 | > 10 |35.1%|
+| <b>online</b>    | 19 | 온라인 서버 운영 / 지속 접속형 / 서비스형     | > 7 |20.5%|
+| <b>story</b>     | 10 | 일회성 / 엔딩 소비형 / 완결형                 | > 5  |40.6%|
 
 </div>
 
@@ -155,8 +155,7 @@ E --> F
 	- 유지(0) 비율이 이탈(1)보다 높아서 클래스 불균형이 존재함
 
 <div align="center">
-    <Image src="https://github.com/user-attachments/assets/95e3666c-0cd3-4ae8-bda0-729843be3de0"
-      width="400">
+    <Image src="image\11-Class imbalance graph.png" width="400">
 </div>
 
 
@@ -210,8 +209,7 @@ E --> F
 1. 분석 방법
 
 <div align="center">
-    <Image src="https://github.com/user-attachments/assets/3adcdab8-0eae-4799-92e4-17578960a38d"
-      width="400"> 
+    <Image src="image\12-Feature graph.png" width="500"> 
 </div>
 
 -   수치형 변수 대상 Pearson 상관계수 계산
@@ -246,8 +244,7 @@ E --> F
 3. 해석
 
 <div align="center"> 
-  <Image src="https://github.com/user-attachments/assets/7d0ece8d-75b4-44ae-8501-1d3474f8889c"
-    width="400">
+  <Image src="image\13-positive negative-graph.png" width="600">
 
 | 변수 | 유지(0) | 이탈(1)|
 |:---:|:---:|:---:|
@@ -270,8 +267,7 @@ E --> F
 2. 대응 방법
 
 <div align="center">
-    <Image src="https://github.com/user-attachments/assets/7f65e13b-b7e3-4172-8388-e6789de58250"
-      width="400">
+    <Image src="image\14-Derived Feature graph.png" width="500">
 </div>
 
 - 기존 데이터를 결합시켜 파생 Feature 생성
@@ -290,7 +286,7 @@ E --> F
 임계값(Threshold)에 의존하지 않고 모델의 분리 능력을 평가할 수 있어, 서로 다른 모델(XGBoost, LightGBM, DL 등)을 공정하게 비교하는 기준으로 사용됨
   - PR 곡선 : 클래스 불균형 환경에서 데이터가 잘 구분되는지 모델인지 성능 확인
 
-- **혼동항렬(Confusion Matrix)**
+- **혼동행렬(Confusion Matrix)**
   - 이탈 유저 미탐지(FN)와 과잉 타겟팅(FP)의 **비대칭적 비용 구조** 반영
   - FN(이탈 유저)를 최소화하는 것을 최우선으로 목표로 함
 
@@ -306,15 +302,12 @@ E --> F
 </div>
 
 ### 4.2. 모델 성능 평가 결과
-게임 이름: Where Winds Meet으로 성능 테스트 진행
-<!-- Recall, precision, F1, ROC-AUC, 혼동항렬 결과 -->
 
 #### 4.2.1. F1-Score 성능 비교
 > F1-score 기준 비교 결과, **HistGradientBoosting 모델**이 대부분의 게임에서 가장 안정적인 이탈 예측 성능을 보였다.
 
 <div align="center">
-  <Image src="https://github.com/user-attachments/assets/c5bc146c-2b47-4464-9eb5-1641a53a43a9"
-    width="700">
+  <Image src="image\15-Model test graph.png" width="700">
     
 ||모델명|게임 이름|Accuracy|Precision|Recall|F1-Score|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -332,12 +325,11 @@ E --> F
 
 
 
-#### 4.2.2. 혼동항렬 비교
-> 이탈 유저를 놓치는 경우(FN)를 가장 최소화하는 방향으로 설계되었으며 조기 대응이 필요한 이탈 유저를 효과적으로 식별한다.
+#### 4.2.2. 혼동행렬 비교
+> 이탈 유저를 놓치는 경우(FN)를 가장 최소화하는 방향으로 설계되었으며 조기 대응이 필요한 이탈 유저를 효과적으로 식별한다. (게임 이름: Where Winds Meet으로 성능 테스트 진행)
 
 <div align="center">
-  <Image src="https://github.com/user-attachments/assets/bcbcbb09-14ce-477f-8395-e2563c2459db"
-    width="400">
+  <Image src="image\16-Confusion Matrix graph.png" width="400">
 
 |            구분           | 의미               |   본 모델 결과 | 해석                          |
 | :---------------------: | :--------------- | --------: | :----------------------------- |
@@ -349,17 +341,16 @@ E --> F
 </div>
 
 #### 4.2.3. ROC-AUC & PR 곡선
-> ROC-AUC 곡선(AUC=0.78)은 모델이 이탈 유저와 유지 유저를 전반적으로 잘 구분하고 있음을 보여주며
-> PR 곡선(AP=0.66)을  통해 클래스 불균형 환경에서도 비교적 안정적인 이탈 탐지 성능을 보임을 확인하였다.
+> ROC-AUC 곡선(AUC=0.78)은 모델이 이탈 유저와 유지 유저를 전반적으로 잘 구분하고 있음을 보여주며 PR 곡선(AP=0.66)을  통해 클래스 불균형 환경에서도 비교적 안정적인 이탈 탐지 성능을 보임을 확인하였다. (게임 이름: Where Winds Meet으로 성능 테스트 진행)
 
 <div align="center">
   
-  <img src="https://github.com/user-attachments/assets/95dba765-37e1-4835-87f8-387e7f70ae06" width="400">
-  <img src="https://github.com/user-attachments/assets/2687246d-d26c-4a69-8624-1858ef5bb186" width="400">
+  <img src="image\17-ROC-AUC graph.png" width="400">
+  <img src="image\18-PR graph.png" width="400">
 
 |지표 | 값 | 해석 |
 |-- |--|--|
-|ROC-AUC | 0.7816 | 이탈 유저와 유지 유저를 전반적으로 잘 구분하는 성능}
+|ROC-AUC | 0.7816 | 이탈 유저와 유지 유저를 전반적으로 잘 구분하는 성능|
 |PR (AP) | 0.6642 | 클래스 불균형 환경에서도 이탈 유저를 안정적으로 탐지|
 
 </div>
@@ -367,11 +358,12 @@ E --> F
 ### 4.3. 모델 성능 개선 및 발전
 
 #### 4.3.1 성능 저하 게임 선별을 통한 단계별 모델 재학습 구조
-> 성능 저하 게임 선별을 위한 재학습 구조 프로세스
+> 성능 저하 게임 선별을 위한 재학습 구조 프로세스 
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/8cf818d4-2cb1-41fe-b775-6eadcf180648"
-       width="600">
+  
+  <img src="image\19-Steam Top 50 Game Churn Test.jpg">
+  
 </div>
 
 #### 4.3.2. 1차 성능 저하 게임 선별 학습
@@ -401,7 +393,7 @@ E --> F
 |  230410 | HistGB   |  48,982 |      0.204 |     0.24 |    0.503 |   0.478 |
 
 
-**2차 성능 테스트 결과표** : [learning_second.csv](/SKN23-2nd-1Team/data/learning_second.csv) <br>
+**2차 모델 성능 평가 전체 결과** : [learning_second.csv](/SKN23-2nd-1Team/data/learning_second.csv) <br>
 
 </div>
 
@@ -416,7 +408,7 @@ E --> F
 | 1808500 | RandomForest | 252,277 |      0.187 |           0.50 |      0.378 |    0.412 |   0.382 |
 | 3405690 | RandomForest |  36,162 |      0.174 |           0.50 |      0.364 |    0.379 |   0.363 |
 
-**3차 성능 테스트 결과표** : [learning_third.csv](/SKN23-2nd-1Team/data/learning_third.csv)
+**3차 모델 성능 평가 전체 결과** : [learning_third.csv](/SKN23-2nd-1Team/data/learning_third.csv)
 
 </div>
 
@@ -543,18 +535,20 @@ skn_2nd_team1
 #### 4.5.2. AWS 서버 배포
 > 상용 서비스 구조를 가정해 AWS EC2에 Streamlit 기반 Demo Server를 구축
 <div align="center">
-<img src="https://github.com/user-attachments/assets/f5ef1738-0595-43f1-a15c-e6aca35341d5"
-  width="400">
-  <img src="https://github.com/user-attachments/assets/c83dcccc-fe2b-4ac0-b172-4fef32d3ff29"
-    width="400">
-  <img src="https://github.com/user-attachments/assets/5fc15aa9-869b-43a1-86c1-1485eb3d924c">
+  <img src="image\20-AWS1.png"
+  width="600">
+  <img src="image\21-AWS2.png"
+    width="600">
+  <img src="image\22-AWS3.png">
 </div>
 
 #### 4.5.3. 모델 시스템 아키텍처
 > ML/DL 모델에서 생성된 이탈률 데이터를 Steam에 소속된 게임 제작사에 전달하여
 > 게임제작사의 이탈 방지 운영 의사결정과 서비스 개선 업데이트로 연결시키는 시스템 아키텍처이다.
 
-![Image](https://github.com/user-attachments/assets/da45d1f2-4901-4431-972e-b850f76be8b5)
+<div align="center">
+  <img src="image\23-Model-system-architecture graph.jpg">
+</div>
 
 ### 4.6. 트러블 슈팅
 #### 트러블 슈팅 1.) 고정 임계값(0.5) 사용 시 이탈 과예측 문제
@@ -618,7 +612,9 @@ SMOTE 적용 후 대부분의 게임에서 test_pos_rate 감소
   - 이탈률이 매우 낮은 게임에서 과도한 SMOTE는 가짜 패턴 학습 → 이탈 과예측 유발
 
 - 해결 방법
-  - (A) Imbalanced Pipeline으로 누수 방지
+
+(A) Imbalanced Pipeline으로 누수 방지
+
 ```Python
 from imblearn.pipeline import Pipeline as ImbPipeline
 from imblearn.over_sampling import SMOTE
@@ -635,7 +631,9 @@ pipe = ImbPipeline([
 ])
 ```
 → SMOTE는 CV/train fold 내부에서만 적용
-  - (B) churn_rate 기반 보수적 SMOTE 적용
+
+(B) churn_rate 기반 보수적 SMOTE 적용
+
 ```Python
 churn_rate = float(y.mean())
 smote_ratio = 0.30 if churn_rate < 0.10 else 0.50
@@ -646,9 +644,9 @@ smote = SMOTE(
     k_neighbors=5
 )
 ```
-이탈률이 매우 낮은 게임에서는 과도한 synthetic sample 생성을 제한, 실제로 3차 학습에서 **test_pos_rate 감소(과예측 완화)**로 이어짐
+이탈률이 매우 낮은 게임에서는 과도한 synthetic sample 생성을 제한, 실제로 3차 학습에서 test_pos_rate 감소(과예측 완화)로 이어짐
 
-> **고정 threshold(0.5)**는 게임별 이탈 예측에 적합하지 않음 Threshold 최적화 + pos_rate 모니터링이 과예측 방지의 핵심
+> 고정 threshold(0.5)는 게임별 이탈 예측에 적합하지 않음 Threshold 최적화 + pos_rate 모니터링이 과예측 방지의 핵심
 > SMOTE는 만능 해결책이 아니며, 데이터 특성에 맞게 보수적으로 적용해야 효과적
 
 ### 4.7. WBS

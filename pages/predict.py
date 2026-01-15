@@ -34,6 +34,8 @@ df["game_name"] = df["game_name"].astype(str)
 appid_to_name = dict(zip(df["appid"].tolist(), df["game_name"].tolist()))
 options = list(appid_to_name.keys())
 
+
+
 st.title("게임별 이탈률 예측")
 
 selected_appid = st.selectbox(
@@ -92,13 +94,14 @@ with st.container():
             </div>
 
         </div>
-        </div>
+        </div> 
     </div>
     </a>
     </div>
     """
 
     components.html(html_code, height=700)
+    
 with st.container(border=True):
     st.subheader("실시간 리뷰 예측")
     st.write("*실시간 STEAM 리뷰를 예측합니다.*")
@@ -136,14 +139,17 @@ with st.container(border=True):
         else:
             st.subheader("리뷰 예측")
             churn_full_list_df, churn_view_list_df = mp.churn_predict(df_result,model)
+            
             styled_view = churn_view_list_df.style.set_properties(**{
                 "background-color": "#1b2838",   # Steam 다크 블루
                 "color": "#c7d5e0"               # Steam 글자색
             })
+            
             styled_full = churn_full_list_df.style.set_properties(**{
                 "background-color": "#1b2838",   # Steam 다크 블루
                 "color": "#c7d5e0"               # Steam 글자색
             })
+            
             st.dataframe(styled_view, use_container_width=True, hide_index=True)
             
             
@@ -210,9 +216,7 @@ with st.container(border=True):
                             churn_full_df, churn_view_df = mp.churn_predict(df_review, model)
 
                             # churn_predict가 빈 DF를 반환하는 경우도 대비
-                            if churn_view_df is None or (
-                                hasattr(churn_view_df, "empty") and churn_view_df.empty
-                            ):
+                            if churn_view_df is None or (hasattr(churn_view_df, "empty") and churn_view_df.empty):
                                 st.warning("예측 결과가 없습니다.")
                             else:
                                 styled = churn_view_df.style.set_properties(**{
@@ -221,8 +225,6 @@ with st.container(border=True):
                                 })
                                 st.dataframe(styled, use_container_width=True, hide_index=True)
 
-                                # session_state 저장
-                                st.session_state["one_review_df"] = churn_view_df
 
 
 

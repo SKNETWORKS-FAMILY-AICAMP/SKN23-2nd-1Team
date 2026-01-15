@@ -1,7 +1,4 @@
 import streamlit as st
-from pathlib import Path
-import pandas as pd
-import io
 from util.global_style import apply_global_style
 from util.set_util import set_page
 set_page("Insights")

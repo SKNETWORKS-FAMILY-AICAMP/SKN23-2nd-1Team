@@ -65,7 +65,7 @@ def fetch_reviews_last_n_days(
     filter_offtopic_activity: int = 1,
     sleep_sec: float = 0.35,
 
-    max_reviews: int = 1000,         #  항상 적용되는 상한
+    max_reviews: int = 100,         #  항상 적용되는 상한
 ):
     url = f"https://store.steampowered.com/appreviews/{appid}"
     cursor = "*"

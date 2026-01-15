@@ -21,7 +21,7 @@ def send_hardcoded_alert_with_excel(
     msg.set_content("이 메일은 HTML을 포함합니다.")
     msg.add_alternative(html_body, subtype="html")
 
-    # ✅ 엑셀 첨부
+    # 엑셀 첨부
     msg.add_attachment(
         excel_bytes,
         maintype="application",
