@@ -1,15 +1,12 @@
 import streamlit as st
 from util.global_style import apply_global_style
 from util.set_util import set_page
+from util.show_big import show_img_big
 set_page("Insights")
 
 apply_global_style("images/library_hero 4.jpg")
 
-st.markdown("""
-<style>
 
-</style>
-""", unsafe_allow_html=True)
 st.title("인사이트")
 
 with st.container(border=True):

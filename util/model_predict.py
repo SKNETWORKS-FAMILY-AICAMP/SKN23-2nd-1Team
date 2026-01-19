@@ -677,6 +677,7 @@ def churn_predict(df, model):
     "playtime_at_review",        # 리뷰 이전 플레이 시간
     "reviews_per_game"           # 유저 활동성
     ]
+    
     demo_df = df_out[DEMO_COLUMNS]
 
     demo_df.insert(
@@ -684,7 +685,20 @@ def churn_predict(df, model):
         column="risk_segment",
         value=demo_df["churn_proba"].apply(segment)
     )
+    
+    FEATURE_LABELS_KO = {
+    "steamid": "스팀ID",
+    "churn_proba": "이탈 확률(%)",
+    "risk_segment": "위험군",
+    "review": "리뷰 내용",
+    "voted_up": "추천 여부",
+    "playtime_at_review": "리뷰 시 플레이타임(분)",
+    "reviews_per_game": "게임당 리뷰수",
+    "weighted_vote_score": "가중 투표 점수",
+    # 필요한 만큼 계속 추가
+    }
+    demo_df_ui = demo_df.rename(columns=FEATURE_LABELS_KO)
  
     ## 표출용 데이터셋 생성 끝 ##
 
-    return (df_out, demo_df)
+    return (df_out, demo_df_ui)

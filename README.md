@@ -690,6 +690,21 @@ smote = SMOTE(
 
 </div>
 
+### 4.9. 시연
+<div align="center">
+
+<img src="image/24-2nd_project_first.gif" width="100%" />
+
+<img src="image/26-2nd_project_second.gif" width="100%" />
+
+<img src="image/27-2nd_project_third.gif" width="100%" />
+
+<img src="image/25-2nd_project_fourth.gif" width="100%" />
+
+
+
+</div>
+
 ------------------------------------------------------------------
 
 ## 5. 결론
