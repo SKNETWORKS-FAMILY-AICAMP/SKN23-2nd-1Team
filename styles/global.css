@@ -292,3 +292,8 @@ button[kind="secondary"]:active {
     max-width:100%;
   }
 }
+
+/* 요소 오른쪽 위 툴바(⛶ 포함) 숨기기 - 버전 따라 조정 필요 */
+[data-testid="stElementToolbar"]{
+  display: none !important;
+}
